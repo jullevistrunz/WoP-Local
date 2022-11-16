@@ -1,0 +1,335 @@
+:root {
+  --main-color: rgb(247, 18, 228);
+  --main-color-dark: rgb(204, 18, 188);
+  --main-background-color: rgb(46, 50, 112);
+  --secondary-color: rgb(100, 100, 100);
+  --secondary-color-light: rgb(175, 175, 175);
+  --secondary-color-dark: rgb(50, 50, 50);
+  --red-dark: rgb(204, 0, 0);
+  --box-shadow: 1px 1px 2px 2px rgba(7, 7, 7, 0.33);
+  --box-shadow-focus: 0 0px 2px 2px rgba(7, 7, 7, 0.33);
+  --border-radius-small: 7px;
+  --border-radius-large: 10px;
+}
+
+::selection {
+  background-color: var(--main-color);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-size: 24px;
+  font-family: 'Segoe UI';
+  color: white;
+  background-color: var(--main-background-color);
+  margin: 20px;
+  margin-top: 0px;
+}
+
+div.header {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+div.header-small {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.center {
+  text-align: center;
+}
+.left {
+  text-align: left;
+}
+.right {
+  text-align: right;
+}
+
+div.spacer {
+  width: 100%;
+  height: 20px;
+}
+div.spacer-large {
+  width: 100%;
+  height: 40px;
+}
+div.spacer-small {
+  width: 100%;
+  height: 10px;
+}
+div.spacer-verySmall {
+  width: 100%;
+  height: 5px;
+}
+
+.itemContainer {
+  color: var(--secondary-color-dark);
+  background-color: rgba(255, 255, 255, 0.95);
+  width: fit-content;
+  min-width: fit-content;
+  border-radius: var(--border-radius-large);
+  padding: 10px;
+  box-shadow: var(--box-shadow);
+}
+
+.itemContainer.setWidth {
+  width: calc(100% - 50px);
+  max-width: 600px;
+}
+
+.itemContainer.center {
+  margin: 0 auto;
+}
+
+.btn {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  background-color: var(--main-color);
+  border: 1px solid var(--main-color-dark);
+  padding: 10px;
+  border-radius: var(--border-radius-small);
+  min-width: fit-content;
+  transition: 150ms ease-in-out;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: var(--main-color-dark);
+}
+
+.btn:disabled {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color-dark);
+  cursor: not-allowed;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: var(--box-shadow-focus);
+  background-color: var(--main-color-dark);
+}
+
+.inpContainer.center.setWidth .btn {
+  width: calc(100% - 48px);
+  max-width: 502px;
+  min-width: 200px;
+}
+
+.inp {
+  font-size: 20px;
+  font-weight: 600;
+  min-width: calc(200px - 20px);
+  padding: 10px;
+  border: 1px solid var(--secondary-color-dark);
+  color: var(--secondary-color-dark);
+  border-radius: var(--border-radius-small);
+  transition: 150ms ease-in-out;
+  outline: none;
+  background-color: inherit;
+}
+
+.inp:focus {
+  box-shadow: var(--box-shadow-focus);
+}
+
+.inp.error {
+  border-color: red;
+  outline-color: red;
+}
+
+.inp::placeholder {
+  color: var(--secondary-color-light);
+}
+
+div.inpContainer.setWidth .inp {
+  width: calc(100% - 50px - 20px);
+  max-width: calc(500px - 20px);
+  min-width: 200px;
+}
+
+.inpErrorInfo-wrapper {
+  margin: 0 auto;
+  width: calc(100% - 50px);
+  max-width: 500px;
+  min-width: fit-content;
+}
+
+.inpErrorInfo {
+  text-align: left;
+  color: red;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.hidden {
+  display: none;
+}
+
+#newGameContainer .sex {
+  position: absolute;
+  transform: translate(-40px, 6px);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-small);
+  padding: 3px;
+  transition: 150ms ease-in-out;
+}
+
+#newGameContainer .sex:hover {
+  background-color: var(--secondary-color-light);
+  border-color: var(--secondary-color-dark);
+}
+
+#moreOptionsContainer .inpWrapper {
+  text-align: left;
+  width: calc(100% - 50px);
+  max-width: calc(500px);
+  margin: auto;
+  white-space: nowrap;
+}
+
+#moreOptionsContainer .checkboxInp {
+  appearance: none;
+  margin: 0;
+}
+
+#moreOptionsContainer .checkboxInp + .checkboxText::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 1px solid var(--secondary-color-dark);
+  color: white;
+  border-radius: var(--border-radius-small);
+  display: block;
+  position: absolute;
+  transform: translate(-30px, 3px);
+  transition: 150ms ease-in-out;
+  transition-property: background-color, border-color;
+}
+
+#moreOptionsContainer .checkboxInp:checked + .checkboxText::before {
+  background-color: var(--main-color);
+  border-color: var(--main-color-dark);
+  background-position: center;
+  background-image: url('src/checked_16px.svg');
+  background-repeat: no-repeat;
+}
+
+#moreOptionsContainer .checkboxInp:focus + .checkboxText::before {
+  box-shadow: var(--box-shadow-focus);
+}
+
+#moreOptionsContainer .checkboxText {
+  position: absolute;
+  font-size: 20px;
+  font-weight: 600;
+  transform: translateX(30px);
+  cursor: pointer;
+}
+
+#moreOptionsContainer .pair > div {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  width: calc(100% - 50px);
+  max-width: 500px;
+  margin: auto;
+}
+
+.listBtn {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 70px;
+  padding: 15px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--box-shadow);
+  border: none;
+  border-bottom-right-radius: var(--border-radius-large);
+  z-index: 2;
+  transition: 400ms ease-in-out;
+}
+
+.listBtn:focus {
+  outline: none;
+}
+
+.listBtn img {
+  transition: 150ms ease-in-out;
+}
+
+.listBtn:hover img,
+.listBtn:focus img {
+  transform: scale(120%);
+}
+
+.list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 61.8%; /* golden ratio */
+  height: 100%;
+  background-color: var(--main-background-color);
+  box-shadow: var(--box-shadow);
+  z-index: 1;
+  transition: 400ms ease-in-out;
+  padding: 70px 0px 0px 15px;
+}
+
+.list.hide {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.list:not(.hide) + .listBtn {
+  box-shadow: none;
+}
+
+#listMenu #registeredPlayers,
+#listMenu #optionsList {
+  color: var(--secondary-color-light);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 5px 0 0 5px;
+  line-height: 32px;
+}
+
+#listMenu #optionsList .playerList {
+  font-size: 16px;
+  font-weight: 600;
+  margin: -5px 0 6px 20px;
+  line-height: 17px;
+}
+
+#listMenu #resetBtn,
+#listMenu #restartBtn {
+  position: absolute;
+  bottom: 85px;
+  width: calc(100% - 30px);
+}
+
+#listMenu #restartBtn {
+  bottom: 140px;
+}
+
+#gameContainer {
+  position: fixed;
+  top: calc(50% - 30px);
+  left: 0;
+  transform: translateY(-50%);
+  width: calc(100% - 30px);
+  margin: 15px;
+}
+
+#gameContainer .btn.vote,
+#gameContainer #restartBtn {
+  width: calc(100% - 50px);
+  max-width: 600px;
+}

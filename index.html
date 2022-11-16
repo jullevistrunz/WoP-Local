@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WoP</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="list hide" id="listMenu">
+      <div class="header-small">Spieler</div>
+      <div id="registeredPlayers">Keine Spieler Registriert</div>
+      <div class="spacer"></div>
+      <div class="header-small hidden" id="optionsHeader">Optionen</div>
+      <div id="optionsList">
+        <div class="hidden">• Ausgedachte Aufgaben</div>
+        <div class="hidden">• Schwerere Aufgaben</div>
+        <div class="hidden">• Aufgaben Steigerung</div>
+        <div class="hidden">
+          • Partner
+          <div class="playerList"></div>
+        </div>
+        <div class="hidden">
+          • Crush
+          <div class="playerList"></div>
+        </div>
+      </div>
+      <button class="btn hidden" id="restartBtn">Spiel Neustarten</button>
+      <button class="btn" id="resetBtn">Neus Spiel</button>
+    </div>
+    <button class="listBtn" id="listBtn">
+      <img src="src/list_40px.svg" alt="Menu" />
+    </button>
+    <div class="spacer-large"></div>
+    <div class="spacer-large"></div>
+    <div class="itemContainer center setWidth" id="newGameContainer">
+      <div class="spacer-verySmall"></div>
+      <div class="header center">Neues Spiel</div>
+      <div class="spacer"></div>
+      <div class="inpContainer center setWidth">
+        <div id="playerInpWrapper">
+          <input type="text" class="inp" id="player0" placeholder="Spieler 1" />
+          <img src="src/male_25px.svg" alt="Sex" class="sex" />
+          <div class="spacer-small"></div>
+          <input type="text" class="inp" id="player1" placeholder="Spieler 2" />
+          <img src="src/male_25px.svg" alt="Sex" class="sex" />
+          <div class="spacer-small"></div>
+          <input type="text" class="inp" id="player2" placeholder="Spieler 3" />
+          <img src="src/male_25px.svg" alt="Sex" class="sex" />
+          <div class="spacer-small"></div>
+        </div>
+        <input
+          class="btn center"
+          type="submit"
+          id="addPlayer"
+          value="Spieler Hinzufügen"
+        />
+        <div class="spacer-small"></div>
+        <input
+          class="btn center"
+          type="submit"
+          id="removePlayer"
+          value="Spieler Entfernen"
+          disabled
+        />
+        <div class="spacer-small"></div>
+        <input
+          class="btn center"
+          type="submit"
+          id="forward"
+          value="Weiter"
+          disabled
+        />
+        <div class="spacer"></div>
+      </div>
+    </div>
+    <div class="itemContainer center setWidth hidden" id="moreOptionsContainer">
+      <div class="spacer-verySmall"></div>
+      <div class="header center">Weitere Optionen</div>
+      <div class="spacer"></div>
+      <div class="inpContainer center setWidth">
+        <div class="inpWrapper">
+          <input type="checkbox" class="checkboxInp" id="option0" />
+          <label
+            for="option0"
+            class="checkboxText"
+            title="Wenn jemand seine Aufgabe nicht erfüllen möchte, kann sich jemand anderes eine Aufgabe ausdenken"
+            >Ausgedachte Aufgaben</label
+          >
+        </div>
+        <div class="spacer-verySmall"></div>
+        <div class="inpWrapper">
+          <input type="checkbox" class="checkboxInp" id="option1" />
+          <label
+            for="option1"
+            class="checkboxText"
+            title="Wenn jemand seine Aufgabe nicht erfüllen möchte, wird eine schwerere Aufgabe generiert"
+            >Schwerere Aufgaben</label
+          >
+        </div>
+        <div class="spacer-verySmall"></div>
+        <div class="inpWrapper">
+          <input type="checkbox" class="checkboxInp" id="option2" />
+          <label
+            for="option2"
+            class="checkboxText"
+            title="Von Runde zu Runde werden die Aufgaben schwerer"
+            >Aufgaben Steigerung</label
+          >
+        </div>
+        <div class="spacer-verySmall"></div>
+        <div class="inpWrapper">
+          <input type="checkbox" class="checkboxInp" id="option3" />
+          <label
+            for="option3"
+            class="checkboxText"
+            title="Feste Beziehungen hinzufügen (Partner 1 ❤️ Partner 2)"
+            >Partner</label
+          >
+        </div>
+        <div id="partnerWrapper" class="hidden">
+          <div class="spacer-small"></div>
+          <div id="partnerInpWrapper"></div>
+          <input
+            class="btn center"
+            type="submit"
+            id="addPair"
+            value="Paar Hinzufügen"
+          />
+          <div class="spacer-small"></div>
+          <input
+            class="btn center"
+            type="submit"
+            id="removePair"
+            value="Paar Entfernen"
+            disabled
+          />
+          <div class="spacer-small"></div>
+        </div>
+        <div class="spacer-verySmall"></div>
+        <div class="inpWrapper">
+          <input type="checkbox" class="checkboxInp" id="option4" />
+          <label
+            for="option4"
+            class="checkboxText"
+            title="Crush hinzufügen (Spieler 1 ❤️→ Spieler 2)"
+            >Crush</label
+          >
+        </div>
+        <div id="crushWrapper" class="hidden">
+          <div class="spacer-small"></div>
+          <div id="crushInpWrapper"></div>
+          <input
+            class="btn center"
+            type="submit"
+            id="addCrush"
+            value="Crush Hinzufügen"
+          />
+          <div class="spacer-small"></div>
+          <input
+            class="btn center"
+            type="submit"
+            id="removeCrush"
+            value="Crush Entfernen"
+            disabled
+          />
+        </div>
+        <div class="spacer"></div>
+        <input class="btn center" type="submit" id="forward" value="Weiter" />
+        <div class="spacer-small"></div>
+        <input class="btn center" type="submit" id="backward" value="Zurück" />
+        <div class="spacer"></div>
+      </div>
+    </div>
+    <div id="gameContainer" class="hidden center">
+      <div id="gameStage0">
+        <div class="header">Lädt...</div>
+        <div class="spacer-large"></div>
+        <div class="spacer"></div>
+        <button class="btn vote" id="voteTruth">Wahrheit</button>
+        <div class="spacer-small"></div>
+        <button class="btn vote" id="voteDare">Pflicht</button>
+      </div>
+      <div class="hidden" id="gameStage1">
+        <div class="header">Lädt...</div>
+        <div class="spacer-large"></div>
+        <div class="spacer"></div>
+        <button class="btn" id="restartBtn">Spiel Neustarten</button>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+  <script src="src/truth.js"></script>
+  <script src="src/dare.js"></script>
+</html>
