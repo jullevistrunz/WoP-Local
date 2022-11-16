@@ -497,11 +497,18 @@ function updateListMenu() {
       }
     }
   }
+  if (localStorage.getItem('level')) {
+    document.querySelector('#listMenu #level').classList.remove('hidden')
+    document.querySelector('#listMenu #level').innerHTML = `Level: ${Math.floor(
+      localStorage.getItem('level')
+    )}`
+  }
 }
 
 function startGame() {
   console.info('Game started')
   document.querySelector('#listMenu #restartBtn').classList.remove('hidden')
+  if (!localStorage.getItem('level')) localStorage.setItem('level', 1)
   const players = JSON.parse(localStorage.getItem('players'))
   const options = JSON.parse(localStorage.getItem('options'))
   let partner = null
@@ -529,11 +536,13 @@ function startGame() {
   document.querySelector(
     '#gameContainer #gameStage0 > .header'
   ).innerHTML = `<i>${player0}</i>, wähle Wahrheit oder Pflicht!`
+  updateListMenu()
 }
 
 function restartGame() {
   localStorage.removeItem('player0')
   localStorage.removeItem('player1')
+  localStorage.removeItem('level')
   document.getElementById('listBtn').click()
   startGame()
 }
@@ -546,9 +555,9 @@ function gameStage1(choice) {
 
   let player0 = localStorage.getItem('player0')
   let player1 = localStorage.getItem('player1')
-  let level = 1
-  const oldLevel = localStorage.getItem('level')
+  const level = Math.floor(localStorage.getItem('level'))
   const options = localStorage.getItem('options')
+  const levelIncrease = options[2]
   if (!player0 || !player1) {
     document
       .querySelector('#gameContainer #gameStage0')
@@ -556,8 +565,8 @@ function gameStage1(choice) {
     document.querySelector('#gameContainer #gameStage1').classList.add('hidden')
     startGame()
   }
-  if (!oldLevel || options[2]) {
-    level = oldLevel + 1
+  if (levelIncrease) {
+    localStorage.setItem('level', localStorage.getItem('level') - 0 + 0.5)
   }
   document.querySelector('#gameContainer #gameStage1 #restartBtn').onclick =
     () => {
@@ -591,7 +600,7 @@ function gameStage1(choice) {
     console.log(sumArr)
 
     content = truth(player0, player1).normal.sample()[0]
-  } else if (choice == 'd') {
+  } else {
     const probabilityElse =
       (1 - truth().probabilityNormal) / (Object.keys(truth()).length - 2)
     content = dare(player0, player1).normal.sample()[0]
