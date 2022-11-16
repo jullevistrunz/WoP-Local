@@ -1,5 +1,11 @@
 # WoP-Local
 
-Truth or Dare Game with some Options
+Wahrheit oder Pflicht mit Optionen
 
-languages: german
+------------
+
+Truth or dare with options
+
+------------
+
+> Language: DE / German
