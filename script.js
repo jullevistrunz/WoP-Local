@@ -546,6 +546,8 @@ function gameStage1(choice) {
 
   let player0 = localStorage.getItem('player0')
   let player1 = localStorage.getItem('player1')
+  let oldLevel = localStorage.getItem('level')
+  const options = localStorage.getItem('options')
   if (!player0 || !player1) {
     document
       .querySelector('#gameContainer #gameStage0')
@@ -553,6 +555,7 @@ function gameStage1(choice) {
     document.querySelector('#gameContainer #gameStage1').classList.add('hidden')
     startGame()
   }
+  if (!oldLevel || options[2])
   document.querySelector('#gameContainer #gameStage1 #restartBtn').onclick =
     () => {
       generatePlayer0()
@@ -582,11 +585,11 @@ function gameStage1(choice) {
       sumArr.push(sumArr[i] + probabilityElse)
     }
     console.log(sumArr)
-    content = truth(player0, player1).normal.sample()
+    content = truth(player0, player1).normal.sample()[0]
   } else if (choice == 'd') {
     const probabilityElse =
       (1 - truth().probabilityNormal) / (Object.keys(truth()).length - 2)
-    content = dare(player0, player1).normal.sample()
+    content = dare(player0, player1).normal.sample()[0]
   }
   document.querySelector(
     '#gameContainer #gameStage1 > .header'

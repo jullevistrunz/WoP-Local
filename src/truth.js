@@ -1,6 +1,6 @@
 const truth = (player0 = 'Spieler 1', player1 = 'Spieler 2') => {
   return {
-    normal: [`${player0} sage etwas über ${player1}`],
+    normal: [[`${player0} sage etwas über ${player1}`, 1]],
     partner: [],
     crush: [],
     differentSex: [],
