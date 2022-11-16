@@ -598,6 +598,23 @@ function gameStage1(choice) {
       sumArr.push(sumArr[i] + probabilityElse)
     }
     console.log(sumArr)
+    function lowerBound(target, low = 0, high = sumArr.length - 1) {
+      if (low == high) {
+        return low
+      }
+      const midPoint = Math.floor((low + high) / 2)
+      if (target < sumArr[midPoint]) {
+        return lowerBound(target, low, midPoint)
+      } else if (target > sumArr[midPoint]) {
+        return lowerBound(target, midPoint + 1, high)
+      } else {
+        return midPoint + 1
+      }
+    }
+    function getRandom() {
+      return lowerBound(Math.random())
+    }
+    console.log(Object.keys(truth())[getRandom()])
 
     content = truth(player0, player1).normal.sample()[0]
   } else {
