@@ -519,23 +519,23 @@ function startGame() {
   if (options[4]) {
     crush = JSON.parse(localStorage.getItem('crush'))
   }
-  let player0 = localStorage.getItem('player0')
-  let player1 = localStorage.getItem('player1')
+  let player0 = JSON.parse(localStorage.getItem('player0'))
+  let player1 = JSON.parse(localStorage.getItem('player1'))
   if (!player0) {
-    player0 = players.sample()[0]
-    localStorage.setItem('player0', player0)
+    player0 = players.sample()
+    localStorage.setItem('player0', JSON.stringify(player0))
   }
   if (!player1) {
     generatePlayer1()
     function generatePlayer1() {
-      player1 = players.sample()[0]
-      if (player1 == player0) generatePlayer1()
+      player1 = players.sample()
+      if (player1[0] == player0[0]) generatePlayer1()
     }
-    localStorage.setItem('player1', player1)
+    localStorage.setItem('player1', JSON.stringify(player1))
   }
   document.querySelector(
     '#gameContainer #gameStage0 > .header'
-  ).innerHTML = `<i>${player0}</i>, wähle Wahrheit oder Pflicht!`
+  ).innerHTML = `<i>${player0[0]}</i>, wähle Wahrheit oder Pflicht!`
   updateListMenu()
 }
 
@@ -553,8 +553,8 @@ function gameStage1(choice) {
     .querySelector('#gameContainer #gameStage1')
     .classList.remove('hidden')
 
-  let player0 = localStorage.getItem('player0')
-  let player1 = localStorage.getItem('player1')
+  let player0 = JSON.parse(localStorage.getItem('player0'))
+  let player1 = JSON.parse(localStorage.getItem('player1'))
   const level = Math.floor(localStorage.getItem('level'))
   const options = localStorage.getItem('options')
   const levelIncrease = options[2]
@@ -574,10 +574,10 @@ function gameStage1(choice) {
       generatePlayer0()
       function generatePlayer0() {
         let oldPlayer0 = player0
-        player0 = JSON.parse(localStorage.getItem('players')).sample()[0]
-        if (player0 == oldPlayer0) generatePlayer0()
+        player0 = JSON.parse(localStorage.getItem('players')).sample()
+        if (player0[0] == oldPlayer0[0]) generatePlayer0()
       }
-      localStorage.setItem('player0', player0)
+      localStorage.setItem('player0', JSON.stringify(player0))
       localStorage.removeItem('player1')
       document
         .querySelector('#gameContainer #gameStage0')
@@ -617,23 +617,16 @@ function gameStage1(choice) {
       let gameMode = Object.keys(truth())[getRandom()]
       console.log(gameMode)
 
-      if (gameMode == 'partner') {
-        if (!options[3]) {
-          generateContent()
-        } else {
-          content = truth(player0, player1)[gameMode].sample()[0]
-        }
-      } else if (gameMode == 'crush') {
-        if (!options[4]) {
-          generateContent()
-        } else {
-          content = truth(player0, player1)[gameMode].sample()[0]
-        }
+      if (gameMode == 'partner' && !options[3]) {
+        generateContent()
+      } else if (gameMode == 'crush' && !options[4]) {
+        generateContent()
       } else if (gameMode == 'differentSex') {
-        //TODO: store player0 / player1 as array with sex
+        generateContent()
       } else if (gameMode == 'sameSex') {
+        generateContent()
       } else {
-        //normal
+        content = truth(player0, player1)[gameMode].sample()[0]
       }
     }
   } else {
