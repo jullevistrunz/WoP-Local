@@ -717,7 +717,7 @@ function gameStage1(choice) {
             inCrush = true
           }
         }
-        //TODO: check if it still runs if option 4 is disabled
+        //TODO: check if it still runs when option 4 is disabled
         if (!inCrush || !options[4]) {
           generateContent()
           return
