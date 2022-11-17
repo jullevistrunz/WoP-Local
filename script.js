@@ -555,6 +555,8 @@ function gameStage1(choice) {
 
   let player0 = JSON.parse(localStorage.getItem('player0'))
   let player1 = JSON.parse(localStorage.getItem('player1'))
+  const partner = JSON.parse(localStorage.getItem('partner'))
+  const crush = JSON.parse(localStorage.getItem('crush'))
   const level = Math.floor(localStorage.getItem('level'))
   const options = localStorage.getItem('options')
   const levelIncrease = options[2]
@@ -596,8 +598,18 @@ function gameStage1(choice) {
     for (let i = 0; i < Object.keys(truth()).length - 2; i++) {
       sumArr.push(sumArr[i] + probabilityElse)
     }
+    let generateTry = 0
     generateContent()
     function generateContent() {
+      console.log(generateTry)
+      if (generateTry > 50) {
+        localStorage.removeItem('level')
+        localStorage.removeItem('player0')
+        localStorage.removeItem('player1')
+        location.reload()
+        return //for whatever reason it keeps running without "return"
+      }
+      generateTry++
       function lowerBound(target, low = 0, high = sumArr.length - 1) {
         if (low == high) {
           return low
@@ -615,19 +627,42 @@ function gameStage1(choice) {
         return lowerBound(Math.random())
       }
       let gameMode = Object.keys(truth())[getRandom()]
+
       console.log(gameMode)
 
-      if (gameMode == 'partner' && !options[3]) {
+      if (gameMode == 'partner') {
+        let inPartner = false
+        for (let i = 0; i < partner.length; i++) {
+          if (
+            (partner[i][0] == player0[0] && partner[i][1] == player1[0]) ||
+            (partner[i][1] == player0[0] && partner[i][0] == player1[0])
+          ) {
+            inPartner = true
+          }
+        }
+        if (!inPartner || !options[3]) {
+          generateContent()
+        }
+      } else if (gameMode == 'crush') {
+        let inCrush = false
+        for (let i = 0; i < crush.length; i++) {
+          if (crush[i][0] == player0[0] && crush[i][1] == player1[0]) {
+            inCrush = true
+          }
+        }
+        if (!inCrush || !options[4]) {
+          generateContent()
+        }
+      } else if (gameMode == 'differentSex' && player0[1] == player1[1]) {
         generateContent()
-      } else if (gameMode == 'crush' && !options[4]) {
+      } else if (gameMode == 'sameSex' && player0[1] != player1[1]) {
         generateContent()
-      } else if (gameMode == 'differentSex') {
-        generateContent()
-      } else if (gameMode == 'sameSex') {
-        generateContent()
-      } else {
-        content = truth(player0, player1)[gameMode].sample()[0]
       }
+      const selectedContent = truth(player0, player1)[gameMode].sample()
+      if (selectedContent[1] != level) {
+        generateContent()
+      }
+      content = selectedContent[0]
     }
   } else {
     const probabilityElse =
