@@ -24,7 +24,7 @@ Crush hinzufügen (Spieler 1 ❤️→ Spieler 2)
 
 ---
 
-Siehe Wiki für mehr Informationen und Entwickler-Informationen
+Siehe [Wiki](https://github.com/jullevistrunz/WoP-Local/wiki) für mehr Informationen und Entwickler Informationen
 
 ---
 
