@@ -438,6 +438,7 @@ function moreOptionsRemoveCrush() {
 function updateListMenu() {
   if (!localStorage.getItem('players')) return
   const players = JSON.parse(localStorage.getItem('players'))
+  const options = JSON.parse(localStorage.getItem('options'))
   const tempArr = new Array()
   for (let i = 0; i < players.length; i++) {
     tempArr.push(
@@ -454,12 +455,13 @@ function updateListMenu() {
     document
       .querySelector('#listMenu #optionsHeader')
       .classList.remove('hidden')
-    const options = JSON.parse(localStorage.getItem('options'))
+    let optionsExist = false
     for (let i = 0; i < options.length; i++) {
       if (options[i]) {
         document
           .querySelectorAll('#listMenu #optionsList div:not(.playerList)')
           [i].classList.remove('hidden')
+        optionsExist = true
       }
       if (options[3]) {
         let partnerArr = new Array()
@@ -496,8 +498,11 @@ function updateListMenu() {
         )[1].innerHTML = partnerArr.join('')
       }
     }
+    if (!optionsExist) {
+      document.querySelector('#listMenu #optionsHeader').classList.add('hidden')
+    }
   }
-  if (localStorage.getItem('level')) {
+  if (localStorage.getItem('level') && options[2]) {
     document.querySelector('#listMenu #level').classList.remove('hidden')
     document.querySelector('#listMenu #level').innerHTML = `Level: ${Math.floor(
       localStorage.getItem('level')
@@ -510,15 +515,6 @@ function startGame() {
   document.querySelector('#listMenu #restartBtn').classList.remove('hidden')
   if (!localStorage.getItem('level')) localStorage.setItem('level', 1)
   const players = JSON.parse(localStorage.getItem('players'))
-  const options = JSON.parse(localStorage.getItem('options'))
-  let partner = null
-  let crush = null
-  if (options[3]) {
-    partner = JSON.parse(localStorage.getItem('partner'))
-  }
-  if (options[4]) {
-    crush = JSON.parse(localStorage.getItem('crush'))
-  }
   let player0 = JSON.parse(localStorage.getItem('player0'))
   let player1 = JSON.parse(localStorage.getItem('player1'))
   if (!player0) {
@@ -547,7 +543,7 @@ function restartGame() {
   startGame()
 }
 
-function gameStage1(choice) {
+function gameStage1(choice, forceLvl = 0) {
   document.querySelector('#gameContainer #gameStage0').classList.add('hidden')
   document
     .querySelector('#gameContainer #gameStage1')
@@ -557,7 +553,7 @@ function gameStage1(choice) {
   let player1 = JSON.parse(localStorage.getItem('player1'))
   const partner = JSON.parse(localStorage.getItem('partner'))
   const crush = JSON.parse(localStorage.getItem('crush'))
-  const level = Math.floor(localStorage.getItem('level'))
+  const level = forceLvl || Math.floor(localStorage.getItem('level'))
   const options = JSON.parse(localStorage.getItem('options'))
   const levelIncrease = options[2]
   if (!player0 || !player1) {
@@ -567,10 +563,24 @@ function gameStage1(choice) {
     document.querySelector('#gameContainer #gameStage1').classList.add('hidden')
     startGame()
   }
-  if (levelIncrease && level < 10) {
+  if (levelIncrease && level < 10 && !forceLvl) {
     localStorage.setItem('level', localStorage.getItem('level') - 0 + 0.5)
   }
-
+  if (options[0]) {
+    document
+      .querySelector('#gameContainer #gameStage1 #imaginaryTasksBtn')
+      .classList.remove('hidden')
+    document
+      .querySelector(
+        '#gameContainer #gameStage1 #imaginaryTasksBtn + .spacer-small'
+      )
+      .classList.remove('hidden')
+  }
+  if (options[1]) {
+    document
+      .querySelector('#gameContainer #gameStage1 #harderTasksBtn')
+      .classList.remove('hidden')
+  }
   document.querySelector('#gameContainer #gameStage1 #restartBtn').onclick =
     () => {
       generatePlayer0()
@@ -589,25 +599,29 @@ function gameStage1(choice) {
         .classList.add('hidden')
       startGame()
     }
-
   let content = ''
-  const probabilityElse =
-    (1 - truth().probabilityNormal) / (Object.keys(truth()).length - 2)
-  let sumArr = [truth().probabilityNormal]
-  for (let i = 0; i < Object.keys(truth()).length - 2; i++) {
-    sumArr.push(sumArr[i] + probabilityElse)
-  }
   if (choice == 't') {
     //truth
+    const probabilityElse =
+      (1 - (truth().probabilityNormal + truth().probabilityPartnerCrush)) /
+      (Object.keys(truth()).length - 6)
+    let sumArr = [
+      truth().probabilityNormal,
+      truth().probabilityNormal + truth().probabilityPartnerCrush / 2,
+      truth().probabilityNormal + truth().probabilityPartnerCrush,
+    ]
+    for (let i = 0; i < Object.keys(truth()).length - 6; i++) {
+      sumArr.push(sumArr[i + 2] + probabilityElse)
+    }
     let generateTry = 0
     generateContent()
     function generateContent() {
-      if (generateTry > 50) {
+      if (generateTry > 1000) {
         localStorage.removeItem('level')
         localStorage.removeItem('player0')
         localStorage.removeItem('player1')
         location.reload()
-        return //for whatever reason it keeps running without "return"
+        return
       }
       generateTry++
       function lowerBound(target, low = 0, high = sumArr.length - 1) {
@@ -660,23 +674,65 @@ function gameStage1(choice) {
         return
       }
       const selectedContent = truth(player0, player1)[gameMode].sample()
-      if (selectedContent[1] != level && options[2]) {
+      if (selectedContent[1] != level && (options[2] || forceLvl)) {
         generateContent()
         return
       }
+      const selectedLevel = selectedContent[1]
       content = selectedContent[0]
+      if (options[1]) {
+        document.querySelector(
+          '#gameContainer  #gameStage1 #harderTasksBtn'
+        ).onclick = function () {
+          if (selectedLevel < 10) {
+            gameStage1(choice, selectedLevel + 1)
+          } else {
+            gameStage1(choice, selectedLevel)
+          }
+          this.classList.add('hidden')
+          document
+            .querySelector('#gameContainer  #gameStage1 #imaginaryTasksBtn ')
+            .classList.add('hidden')
+          return
+        }
+      }
+      if (options[0]) {
+        document.querySelector(
+          '#gameContainer  #gameStage1 #imaginaryTasksBtn'
+        ).onclick = function () {
+          document.querySelector(
+            '#gameContainer #gameStage1 > .header'
+          ).innerHTML = truth(player0, player1).imaginaryTask
+          this.classList.add('hidden')
+          document
+            .querySelector('#gameContainer  #gameStage1 #harderTasksBtn')
+            .classList.add('hidden')
+          return
+        }
+      }
     }
   } else {
     //dare
+    const probabilityElse =
+      (1 - (dare().probabilityNormal + dare().probabilityPartnerCrush)) /
+      (Object.keys(dare()).length - 6)
+    let sumArr = [
+      dare().probabilityNormal,
+      dare().probabilityNormal + dare().probabilityPartnerCrush / 2,
+      dare().probabilityNormal + dare().probabilityPartnerCrush,
+    ]
+    for (let i = 0; i < Object.keys(dare()).length - 6; i++) {
+      sumArr.push(sumArr[i + 2] + probabilityElse)
+    }
     let generateTry = 0
     generateContent()
     function generateContent() {
-      if (generateTry > 50) {
+      if (generateTry > 1000) {
         localStorage.removeItem('level')
         localStorage.removeItem('player0')
         localStorage.removeItem('player1')
         location.reload()
-        return //for whatever reason it keeps running without "return"
+        return
       }
       generateTry++
       function lowerBound(target, low = 0, high = sumArr.length - 1) {
@@ -717,7 +773,6 @@ function gameStage1(choice) {
             inCrush = true
           }
         }
-        //TODO: check if it still runs when option 4 is disabled
         if (!inCrush || !options[4]) {
           generateContent()
           return
@@ -730,11 +785,42 @@ function gameStage1(choice) {
         return
       }
       let selectedContent = dare(player0, player1)[gameMode].sample()
-      if (selectedContent[1] != level && options[2]) {
+      if (selectedContent[1] != level && (options[2] || forceLvl)) {
         generateContent()
         return
       }
+      const selectedLevel = selectedContent[1]
       content = selectedContent[0]
+      if (options[1]) {
+        document.querySelector(
+          '#gameContainer  #gameStage1 #harderTasksBtn'
+        ).onclick = function () {
+          if (selectedLevel < 10) {
+            gameStage1(choice, selectedLevel + 1)
+          } else {
+            gameStage1(choice, selectedLevel)
+          }
+          this.classList.add('hidden')
+          document
+            .querySelector('#gameContainer  #gameStage1 #imaginaryTasksBtn ')
+            .classList.add('hidden')
+          return
+        }
+      }
+      if (options[0]) {
+        document.querySelector(
+          '#gameContainer  #gameStage1 #imaginaryTasksBtn'
+        ).onclick = function () {
+          document.querySelector(
+            '#gameContainer #gameStage1 > .header'
+          ).innerHTML = dare(player0, player1).imaginaryTask
+          this.classList.add('hidden')
+          document
+            .querySelector('#gameContainer  #gameStage1 #harderTasksBtn')
+            .classList.add('hidden')
+          return
+        }
+      }
     }
   }
   document.querySelector(

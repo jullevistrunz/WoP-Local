@@ -323,8 +323,7 @@ div.inpContainer.setWidth .inp {
   margin: 15px;
 }
 
-#gameContainer .btn.vote,
-#gameContainer #restartBtn {
+#gameContainer .btn {
   width: calc(100% - 50px);
   max-width: 600px;
 }
