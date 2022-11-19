@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="list hide" id="listMenu">
+    <div class="list hide hidden" id="listMenu">
       <div class="header-small">Spieler</div>
       <div id="registeredPlayers">Keine Spieler Registriert</div>
       <div class="spacer"></div>
@@ -208,4 +208,8 @@
   <script src="src/truth.js"></script>
   <script src="src/dare.js"></script>
   <script src="script.js"></script>
+  <!-- remove list animation on load -->
+  <script defer>
+    document.getElementById('listMenu').classList.remove('hidden')
+  </script>
 </html>
