@@ -644,11 +644,16 @@ function gameStage1(choice, forceLvl = 0) {
       if (gameMode == 'partner') {
         let inPartner = false
         for (let i = 0; i < partner.length; i++) {
-          if (
-            (partner[i][0] == player0[0] && partner[i][1] == player1[0]) ||
-            (partner[i][1] == player0[0] && partner[i][0] == player1[0])
-          ) {
+          if (partner[i][0] == player0[0]) {
             inPartner = true
+            player1[0] = partner[i][1]
+            player1[1] = null
+            break
+          } else if (partner[i][1] == player0[0]) {
+            inPartner = true
+            player1[0] = partner[i][0]
+            player1[1] = null
+            break
           }
         }
         if (!inPartner || !options[3]) {
@@ -658,8 +663,11 @@ function gameStage1(choice, forceLvl = 0) {
       } else if (gameMode == 'crush') {
         let inCrush = false
         for (let i = 0; i < crush.length; i++) {
-          if (crush[i][0] == player0[0] && crush[i][1] == player1[0]) {
+          if (crush[i][0] == player0[0]) {
             inCrush = true
+            player1[0] = crush[i][1]
+            player1[1] = null
+            break
           }
         }
         if (!inCrush || !options[4]) {
@@ -755,11 +763,16 @@ function gameStage1(choice, forceLvl = 0) {
       if (gameMode == 'partner') {
         let inPartner = false
         for (let i = 0; i < partner.length; i++) {
-          if (
-            (partner[i][0] == player0[0] && partner[i][1] == player1[0]) ||
-            (partner[i][1] == player0[0] && partner[i][0] == player1[0])
-          ) {
+          if (partner[i][0] == player0[0]) {
             inPartner = true
+            player1[0] = partner[i][1]
+            player1[1] = null
+            break
+          } else if (partner[i][1] == player0[0]) {
+            inPartner = true
+            player1[0] = partner[i][0]
+            player1[1] = null
+            break
           }
         }
         if (!inPartner || !options[3]) {
@@ -769,8 +782,11 @@ function gameStage1(choice, forceLvl = 0) {
       } else if (gameMode == 'crush') {
         let inCrush = false
         for (let i = 0; i < crush.length; i++) {
-          if (crush[i][0] == player0[0] && crush[i][1] == player1[0]) {
+          if (crush[i][0] == player0[0]) {
             inCrush = true
+            player1[0] = crush[i][1]
+            player1[1] = null
+            break
           }
         }
         if (!inCrush || !options[4]) {
