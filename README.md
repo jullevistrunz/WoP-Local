@@ -28,8 +28,4 @@ Siehe [Wiki](https://github.com/jullevistrunz/WoP-Local/wiki) für mehr Informat
 
 ---
 
-Truth or dare with options
-
----
-
 > Language: DE / German
