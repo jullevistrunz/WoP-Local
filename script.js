@@ -2,20 +2,20 @@ Array.prototype.sample = function () {
   return this[Math.floor(Math.random() * this.length)]
 }
 
-if (localStorage.getItem('openContainer')) {
-  goToContainer(0, localStorage.getItem('openContainer'))
-  updateListMenu()
-} else if (localStorage.getItem('players')) {
-  goToContainer(0, 1)
-  updateListMenu()
-}
-
 if (
   !localStorage.getItem('players') &&
   localStorage.getItem('openContainer') > 0
 ) {
   localStorage.clear()
   location.reload()
+}
+
+if (localStorage.getItem('openContainer')) {
+  goToContainer(0, localStorage.getItem('openContainer'))
+  updateListMenu()
+} else if (localStorage.getItem('players')) {
+  goToContainer(0, 1)
+  updateListMenu()
 }
 
 document
