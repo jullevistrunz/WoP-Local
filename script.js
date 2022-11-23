@@ -10,6 +10,14 @@ if (localStorage.getItem('openContainer')) {
   updateListMenu()
 }
 
+if (
+  !localStorage.getItem('players') &&
+  localStorage.getItem('openContainer') > 0
+) {
+  localStorage.clear()
+  location.reload()
+}
+
 document
   .getElementById('listBtn')
   .addEventListener('click', () =>
