@@ -238,16 +238,6 @@ function goToContainer(oldIndex, index) {
   document.querySelectorAll('.itemContainer')[oldIndex].classList.add('hidden')
   document.getElementById('gameContainer').classList.remove('hidden')
   localStorage.setItem('openContainer', index)
-  //container specific
-  if (index == 1) {
-    if (!localStorage.getItem('players')) {
-      goToContainer(1, 0)
-    }
-  } else if (index == 2) {
-    if (!localStorage.getItem('options')) {
-      goToContainer(2, 1)
-    }
-  }
   startGame()
 }
 
